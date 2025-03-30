@@ -4,8 +4,6 @@
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
-import struct Foundation.Duration
-
 public struct Statistics {
     public let min: Duration
     public let max: Duration
