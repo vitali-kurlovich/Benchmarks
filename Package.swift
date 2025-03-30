@@ -32,6 +32,5 @@ let package = Package(
                 .product(name: "CLITable", package: "CLI-Table-Swift"),
             ]
         ),
-        
     ]
 )

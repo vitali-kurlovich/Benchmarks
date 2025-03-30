@@ -1,5 +1,5 @@
 //
-//  Benchmark.swift
+//  BenchmarkExecuter.swift
 //  Benchmarks
 //  BenchmarkExecuter.swift
 //  BenchmarkExecuter
@@ -100,7 +100,7 @@ extension BenchmarkExecuter {
             duration -= warmingIteration()
 
             let secondsLeft = duration.components.seconds
-            let progress = Double(secondsLeft) / Double(durationInSeconds)
+            let progress = 1.0 - Double(secondsLeft) / Double(durationInSeconds)
 
             reportWarmingProgress(info: .init(duration: duration), progress)
         }
