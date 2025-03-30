@@ -1,11 +1,10 @@
 //
 //  StatisticReporter.swift
-//  Benchmarks
 //
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
-import CLITable
+import struct CLITable.CLITable
 
 final class StatisticReporter: BenchmarkReporter {
     override func reportFinishAll(_ results: [(info: BenchmarkInfo, statistic: Statistics)]) {

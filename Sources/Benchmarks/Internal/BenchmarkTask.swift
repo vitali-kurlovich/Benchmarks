@@ -5,7 +5,7 @@
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
-import Foundation
+import struct Foundation.Duration
 
 struct BenchmarkTask {
     let id: Int

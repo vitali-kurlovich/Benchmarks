@@ -1,8 +1,5 @@
 //
 //  BenchmarkExecuter.swift
-//  Benchmarks
-//  BenchmarkExecuter.swift
-//  BenchmarkExecuter
 //
 //  Created by Vitali Kurlovich on 30.03.25.
 //

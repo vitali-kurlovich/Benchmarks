@@ -1,11 +1,12 @@
 //
 //  ProgressReporter.swift
-//  Benchmarks
 //
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
-import ConsoleKit
+import class ConsoleKit.ActivityIndicator
+import struct ConsoleKit.ProgressBar
+import class ConsoleKit.Terminal
 
 final class ProgressReporter: BenchmarkReporter {
     let console = Terminal()
