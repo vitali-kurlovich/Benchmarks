@@ -14,10 +14,10 @@ struct BenchmarkTask {
 
 extension BenchmarkTask {
     func run() -> Duration {
-        let context = BenchmarkContext()
         let clock = ContinuousClock()
 
         return clock.measure {
+            let context = BenchmarkContext()
             task(context)
         }
     }

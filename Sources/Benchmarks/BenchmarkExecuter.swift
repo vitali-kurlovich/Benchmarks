@@ -4,11 +4,23 @@
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
-public final class BenchmarkExecuter {
+public protocol BenchmarkExecuterProtocol {
+    var name: String? { get }
+    var repeatCount: Int { get }
+
+    var warmingDuration: Duration { get }
+
+    func start()
+}
+
+public final class BenchmarkExecuter: BenchmarkExecuterProtocol {
+    public var name: String?
     public var repeatCount: Int = 5
     public var warmingDuration: Duration = .seconds(5)
 
-    public init() {}
+    public init(name: String? = nil) {
+        self.name = name
+    }
 
     private var tasks: [BenchmarkTask] = []
     private var tasksDurations: [[Duration]] = []
@@ -16,23 +28,17 @@ public final class BenchmarkExecuter {
     private var reporters: [BenchmarkReporter] = [ProgressReporter(), WarmingReporter(), StatisticReporter()]
 }
 
-public
-extension BenchmarkExecuter {
-    func benchmark(name: String, task: @escaping (BenchmarkContext) -> Void) {
-        let task = BenchmarkTask(id: tasks.endIndex, name: name, task: task)
-        tasks.append(task)
-    }
-
-    func addReporter(_ reporter: BenchmarkReporter) {
-        reporters.append(reporter)
-    }
-
+public extension BenchmarkExecuter {
     func start() {
         tasksDurations = tasks.map { _ in [] }
         warming(warmingDuration)
 
-        for task in tasks {
-            runTask(task)
+        let clock = ContinuousClock()
+
+        let duration = clock.measure {
+            for task in tasks {
+                runTask(task)
+            }
         }
 
         var results: [(info: BenchmarkInfo, statistic: Statistics)] = []
@@ -51,8 +57,18 @@ extension BenchmarkExecuter {
     }
 }
 
-private
-extension BenchmarkExecuter {
+public extension BenchmarkExecuter {
+    func benchmark(name: String, task: @escaping (BenchmarkContext) -> Void) {
+        let task = BenchmarkTask(id: tasks.endIndex, name: name, task: task)
+        tasks.append(task)
+    }
+
+    func addReporter(_ reporter: BenchmarkReporter) {
+        reporters.append(reporter)
+    }
+}
+
+private extension BenchmarkExecuter {
     func runTask(_ task: BenchmarkTask) {
         reportBegin(task: task)
 
@@ -84,8 +100,7 @@ extension BenchmarkExecuter {
     }
 }
 
-private
-extension BenchmarkExecuter {
+private extension BenchmarkExecuter {
     func warming(_ duration: Duration) {
         var duration = duration
 
@@ -114,8 +129,7 @@ extension BenchmarkExecuter {
     }
 }
 
-private
-extension BenchmarkExecuter {
+private extension BenchmarkExecuter {
     func reportBeginWarming(info: WarmingInfo) {
         for reporter in reporters {
             reporter.reportBeginWarming(info: info)
