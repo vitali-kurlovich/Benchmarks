@@ -1,9 +1,8 @@
 //
-//  BenchmarkExecuter.swift
-//
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 public protocol BenchmarkExecuterProtocol {
     var name: String? { get }
     var repeatCount: Int { get }
@@ -13,13 +12,19 @@ public protocol BenchmarkExecuterProtocol {
     func start()
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 public final class BenchmarkExecuter: BenchmarkExecuterProtocol {
     public var name: String?
-    public var repeatCount: Int = 5
-    public var warmingDuration: Duration = .seconds(5)
+    public var repeatCount: Int
+    public var warmingDuration: Duration
 
-    public init(name: String? = nil) {
+    public init(name: String? = nil,
+                repeatCount: Int = 5,
+                warmingDuration: Duration = .seconds(5))
+    {
         self.name = name
+        self.repeatCount = repeatCount
+        self.warmingDuration = warmingDuration
     }
 
     private var tasks: [BenchmarkTask] = []
@@ -28,17 +33,14 @@ public final class BenchmarkExecuter: BenchmarkExecuterProtocol {
     private var reporters: [BenchmarkReporter] = [ProgressReporter(), WarmingReporter(), StatisticReporter()]
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 public extension BenchmarkExecuter {
     func start() {
         tasksDurations = tasks.map { _ in [] }
         warming(warmingDuration)
 
-        let clock = ContinuousClock()
-
-        let duration = clock.measure {
-            for task in tasks {
-                runTask(task)
-            }
+        for task in tasks {
+            runTask(task)
         }
 
         var results: [(info: BenchmarkInfo, statistic: Statistics)] = []
@@ -57,6 +59,7 @@ public extension BenchmarkExecuter {
     }
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 public extension BenchmarkExecuter {
     func benchmark(name: String, task: @escaping (BenchmarkContext) -> Void) {
         let task = BenchmarkTask(id: tasks.endIndex, name: name, task: task)
@@ -68,6 +71,7 @@ public extension BenchmarkExecuter {
     }
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 private extension BenchmarkExecuter {
     func runTask(_ task: BenchmarkTask) {
         reportBegin(task: task)
@@ -100,6 +104,7 @@ private extension BenchmarkExecuter {
     }
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 private extension BenchmarkExecuter {
     func warming(_ duration: Duration) {
         var duration = duration
@@ -129,6 +134,7 @@ private extension BenchmarkExecuter {
     }
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 private extension BenchmarkExecuter {
     func reportBeginWarming(info: WarmingInfo) {
         for reporter in reporters {

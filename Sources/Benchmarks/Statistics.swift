@@ -4,12 +4,14 @@
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
-public struct Statistics {
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+public struct Statistics: Hashable, Codable, Sendable {
     public let min: Duration
     public let max: Duration
     public let mean: Duration
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 extension Statistics {
     init(_ durations: [Duration]) {
         assert(!durations.isEmpty)

@@ -4,7 +4,7 @@
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
-public struct BenchmarkInfo {
+public struct BenchmarkInfo: Hashable, Sendable, Codable {
     public let name: String
 
     init(name: String) {

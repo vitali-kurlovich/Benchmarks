@@ -4,6 +4,7 @@
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 open class BenchmarkReporter {
     open func reportBeginWarming(info _: WarmingInfo) {}
     open func reportWarmingProgress(info _: WarmingInfo, _: Double) {}

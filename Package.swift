@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "swift-benchmarks",
     platforms: [
-        .macOS(.v13),
-        .iOS(.v16),
+        .macOS(.v10_15),
+        .iOS(.v13),
         .watchOS(.v6),
         .tvOS(.v13),
     ],
@@ -32,6 +32,15 @@ let package = Package(
                 .product(name: "ConsoleKit", package: "console-kit"),
                 .product(name: "CLITable", package: "CLI-Table-Swift"),
             ]
+        ),
+
+        .executableTarget(
+            name: "BenchmarksCLI",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                "Benchmarks",
+            ],
+            path: "BenchmarksCLI"
         ),
     ]
 )

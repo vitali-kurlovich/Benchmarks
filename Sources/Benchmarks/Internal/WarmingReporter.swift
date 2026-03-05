@@ -4,10 +4,9 @@
 //  Created by Vitali Kurlovich on 30.03.25.
 //
 
-import class ConsoleKit.ActivityIndicator
-import struct ConsoleKit.ProgressBar
-import class ConsoleKit.Terminal
+import ConsoleKit
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 final class WarmingReporter: BenchmarkReporter {
     let console = Terminal()
     lazy var progressBar = console.progressBar(title: "Warming...")
