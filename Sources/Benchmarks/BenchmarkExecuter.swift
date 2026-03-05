@@ -61,9 +61,17 @@ public extension BenchmarkExecuter {
 
 @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 public extension BenchmarkExecuter {
-    func benchmark(name: String, task: @escaping (BenchmarkContext) -> Void) {
+    func callAsFunction(name: String, task: @escaping () -> Void) {
         let task = BenchmarkTask(id: tasks.endIndex, name: name, task: task)
         tasks.append(task)
+    }
+
+    @available(*, deprecated, message: "use callAsFunction")
+    func benchmark(name: String, task: @escaping (BenchmarkContext) -> Void) {
+        self(name: name) {
+            let context = BenchmarkContext()
+            task(context)
+        }
     }
 
     func addReporter(_ reporter: BenchmarkReporter) {

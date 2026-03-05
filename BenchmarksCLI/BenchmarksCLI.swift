@@ -24,9 +24,9 @@ extension BenchmarkCLI {
     func runBenchmark() {
         let benchmark = BenchmarkExecuter(repeatCount: self.repeat)
 
-        let count = 100_000_000
+        let count = 500_000_000
 
-        benchmark.benchmark(name: "Append \(count)") { _ in
+        benchmark(name: "Append \(count.formatted())") {
             var array: [Int] = []
             for index in 0 ..< count {
                 array.append(index)
@@ -35,7 +35,7 @@ extension BenchmarkCLI {
             blackHole(array.last)
         }
 
-        benchmark.benchmark(name: "Append \(count) reserveCapacity") { _ in
+        benchmark(name: "Append \(count.formatted()) reserveCapacity") {
             var array: [Int] = []
             array.reserveCapacity(count)
             for index in 0 ..< count {

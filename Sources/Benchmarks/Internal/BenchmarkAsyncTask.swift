@@ -9,7 +9,7 @@ struct BenchmarkAsyncTask {
     let id: Int
     let name: String
 
-    let task: @Sendable (BenchmarkContext) async -> Void
+    let task: () async -> Void
 }
 
 @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
@@ -18,8 +18,7 @@ extension BenchmarkAsyncTask {
         let clock = ContinuousClock()
 
         return await clock.measure {
-            let context = BenchmarkContext()
-            await task(context)
+            await task()
         }
     }
 }
