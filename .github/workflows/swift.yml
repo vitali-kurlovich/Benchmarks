@@ -1,0 +1,35 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: BenchmarkCLI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+
+jobs:
+  build:
+    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        swift: ["6.2.3"]
+    
+    steps:
+    - uses: actions/checkout@v5
+    - uses: SwiftyLab/setup-swift@latest
+      with:
+        swift-version: ${{ matrix.swift }}
+    
+    - name: Get swift version
+      run: swift --version
+
+    - name: Build
+      run: swift build -v
+
+    - name: Run Benchmark
+      run: swift run -c release
