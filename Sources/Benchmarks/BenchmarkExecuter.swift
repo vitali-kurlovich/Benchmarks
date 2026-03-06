@@ -66,14 +66,6 @@ public extension BenchmarkExecuter {
         tasks.append(task)
     }
 
-    @available(*, deprecated, message: "use callAsFunction")
-    func benchmark(name: String, task: @escaping (BenchmarkContext) -> Void) {
-        self(name: name) {
-            let context = BenchmarkContext()
-            task(context)
-        }
-    }
-
     func addReporter(_ reporter: BenchmarkReporter) {
         reporters.append(reporter)
     }
