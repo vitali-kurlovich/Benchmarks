@@ -8,8 +8,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-
+    
 jobs:
   build:
     name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
@@ -17,7 +16,6 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
-        swift: ["6.2.3"]
     
     steps:
     - uses: actions/checkout@v5
@@ -33,3 +31,7 @@ jobs:
 
     - name: Run Benchmark
       run: swift run -c release
+
+    - name: Get swift version in macOS
+      if: runner.os == 'macOS'
+      run: xcrun --toolchain ${{ env.TOOLCHAINS }} swift --version
