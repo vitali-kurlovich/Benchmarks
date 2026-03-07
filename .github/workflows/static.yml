@@ -36,7 +36,7 @@ jobs:
         uses: SwiftyLab/setup-swift@latest
       
       - name: DocC
-        run: swift package --allow-writing-to-directory ./docs generate-documentation --target Benchmarks --output-path ./docs --transform-for-static-hosting --hosting-base-path Benchmarks
+        run: swift package --allow-writing-to-directory ./docs generate-documentation --target Benchmarks --output-path ./docs --disable-indexing --transform-for-static-hosting --hosting-base-path https://vitali-kurlovich.github.io/Benchmarks/
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
