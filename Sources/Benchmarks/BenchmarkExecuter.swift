@@ -20,7 +20,7 @@ public final class BenchmarkExecuter: BenchmarkExecuterProtocol {
 
     public init(name: String? = nil,
                 repeatCount: Int = 5,
-                warmingDuration: Duration = .seconds(5))
+                warmingDuration: Duration = .seconds(2))
     {
         self.name = name
         self.repeatCount = repeatCount
@@ -107,30 +107,26 @@ private extension BenchmarkExecuter {
 @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 private extension BenchmarkExecuter {
     func warming(_ duration: Duration) {
-        var duration = duration
+        guard tasks.isEmpty == false else { return }
 
-        let durationInSeconds = duration.components.seconds
+        var remaining = duration
 
         reportBeginWarming(info: .init(duration: duration))
 
-        while duration > .zero {
-            duration -= warmingIteration()
+        var taskIterator = tasks.makeIterator()
 
-            let secondsLeft = duration.components.seconds
-            let progress = 1.0 - Double(secondsLeft) / Double(durationInSeconds)
+        while remaining > .milliseconds(200) {
+            if let task = taskIterator.next() {
+                remaining -= task.run()
+            } else {
+                taskIterator = tasks.makeIterator()
+            }
 
+            let progress = 1.0 - remaining.timeInterval / duration.timeInterval
             reportWarmingProgress(info: .init(duration: duration), progress)
         }
 
         reportEndWarming()
-    }
-
-    func warmingIteration() -> Duration {
-        var duration: Duration = .zero
-        for task in tasks {
-            duration += task.run()
-        }
-        return duration
     }
 }
 
